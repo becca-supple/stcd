@@ -2,7 +2,9 @@ Package: stcd
 Title: Spatiotemporal Causal Discovery
 Version: 0.0.0.9000
 Authors@R: 
-    person("Rebecca", "Supple", , "rbs9@st-andrews.ac.uk", role = c("aut", "cre"))
+    person("Rebecca", "Supple", , "rbs9@st-andrews.ac.uk", 
+      role = c("aut", "cre"),
+      comment = c(ORCID = "0000-0002-9752-0656"))
 Description: Causal discovery algorithm for spatially distributed time series 
     and functions to simulate and evaluate output.
 License: MIT + file LICENSE
