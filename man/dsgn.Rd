@@ -17,8 +17,6 @@ Functions associated with 'dsgn' objects
 }
 \examples{
 design <- matrix(nrow = 2, ncol = 2)
-is.dsgn(design)
-
-design <- as.dsgn(design)
-is.dsgn(design)
+design <- dsgn(design)
+class(design)
 }
