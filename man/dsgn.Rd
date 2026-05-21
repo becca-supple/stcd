@@ -7,7 +7,7 @@
 dsgn(x)
 }
 \arguments{
-\item{x}{A data.frame or coercible object}
+\item{x}{A data.frame or coercible object with shifted time series columns labeled 'VAR_tminus#'}
 }
 \value{
 A 'dsgn' object or TRUE/FALSE
@@ -17,6 +17,12 @@ Functions associated with 'dsgn' objects
 }
 \examples{
 design <- matrix(nrow = 2, ncol = 2)
-design <- dsgn(design)
-class(design)
+is.dsgn(design)
+
+# as.dsgn will throw an error if columns do not represent time series (i.e. if no column name contains 'tminus')
+try(design <- as.dsgn(design))
+
+colnames(design) <- c("var", "var_tminus1")
+design <- as.dsgn(design)
+is.dsgn(design)
 }
