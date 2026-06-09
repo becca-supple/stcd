@@ -1,7 +1,7 @@
 #' Find or fit new gam if residuals are not already stored in temporary
 #' environment
 #'
-#' @param design Design matrix
+#' @param design Design matrix - either a `coord_dsgn` or `discrete_dsgn` object
 #' @param response Column index of response variable
 #' @param model_on Vector of column index/indices of predictor variables, or
 #' `"null"` for a space-only model

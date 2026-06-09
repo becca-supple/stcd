@@ -16,7 +16,7 @@ find_or_fit(
 )
 }
 \arguments{
-\item{design}{Design matrix}
+\item{design}{Design matrix - either a \code{coord_dsgn} or \code{discrete_dsgn} object}
 
 \item{response}{Column index of response variable}
 
