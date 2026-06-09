@@ -94,8 +94,12 @@ WGCM_fix <- function(resid.XonZ, resid.YonZ, Z, k0, nsim = 499){
 
 }
 
-#' @export
-gcm.test <- function(resid.XonZ = NULL, resid.YonZ = NULL, alpha = 0.05){
+# Helpers -----------------------------------------------------------------
+
+gcm.test <- function(resid.XonZ = NULL,
+                     resid.YonZ = NULL,
+                     alpha = 0.05,
+                     nsim = 499){
 
   if (is.null(resid.XonZ)) {
     stop("resid.XonZ must be provided.")
@@ -132,7 +136,7 @@ gcm.test <- function(resid.XonZ = NULL, resid.YonZ = NULL, alpha = 0.05){
     meanR <- mean(R)
     test.statistic <- sqrt(nn) * meanR/sqrt(mean(R.sq) -
                                               meanR^2)
-    p.value <- 2 * pnorm(abs(test.statistic), lower.tail = FALSE)
+    p.value <- 2 * stats::pnorm(abs(test.statistic), lower.tail = FALSE)
 
   }
   return(list(p.value = p.value, test.statistic = test.statistic,
