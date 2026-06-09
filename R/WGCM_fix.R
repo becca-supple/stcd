@@ -93,3 +93,48 @@ WGCM_fix <- function(resid.XonZ, resid.YonZ, Z, k0, nsim = 499){
   return(list(test.statistic = test.statistic, p.value = p.value))
 
 }
+
+#' @export
+gcm.test <- function(resid.XonZ = NULL, resid.YonZ = NULL, alpha = 0.05){
+
+  if (is.null(resid.XonZ)) {
+    stop("resid.XonZ must be provided.")
+  }
+  if (is.null(resid.YonZ)) {
+    stop("resid.YonZ must be provided.")
+  }
+
+  nn <- NA
+
+  if (NCOL(resid.XonZ) > 1 || NCOL(resid.YonZ) > 1) {
+    d_X <- NCOL(resid.XonZ)
+    d_Y <- NCOL(resid.YonZ)
+    nn <- NROW(resid.XonZ)
+    R_mat <- rep(resid.XonZ, times = d_Y) * as.numeric(as.matrix(resid.YonZ)[,
+                                                                             rep(seq_len(d_Y), each = d_X)])
+    dim(R_mat) <- c(nn, d_X * d_Y)
+    R_mat <- t(R_mat)
+    R_mat <- R_mat/sqrt((rowMeans(R_mat^2) - rowMeans(R_mat)^2))
+    test.statistic <- max(abs(rowMeans(R_mat))) * sqrt(nn)
+    test.statistic.sim <- apply(abs(R_mat %*% matrix(rnorm(nn *
+                                                             nsim), nn, nsim)), 2, max)/sqrt(nn)
+    p.value <- (sum(test.statistic.sim >= test.statistic) +
+                  1)/(nsim + 1)
+
+
+  }
+
+  else {
+    nn <- ifelse(is.null(dim(resid.XonZ)), length(resid.XonZ),
+                 dim(resid.XonZ)[1])
+    R <- resid.XonZ * resid.YonZ
+    R.sq <- R^2
+    meanR <- mean(R)
+    test.statistic <- sqrt(nn) * meanR/sqrt(mean(R.sq) -
+                                              meanR^2)
+    p.value <- 2 * pnorm(abs(test.statistic), lower.tail = FALSE)
+
+  }
+  return(list(p.value = p.value, test.statistic = test.statistic,
+              reject = (p.value < alpha)))
+}
