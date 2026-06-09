@@ -3,7 +3,9 @@
 
 ## usethis namespace: start
 #' @import mgcv
+#' @importFrom stats as.formula
 #' @importFrom stats family
+#' @importFrom stats residuals
 #' @importFrom stats rnorm
 #' @importFrom tidyselect all_of
 ## usethis namespace: end
