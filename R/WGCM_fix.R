@@ -17,6 +17,7 @@
 #'
 #' @returns A list containing the test statistic (`test.statistic`) and p-value
 #' (`p.value`) of the wGCM test.
+#'
 #' @export
 #'
 #' @examples
