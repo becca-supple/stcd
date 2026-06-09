@@ -2,7 +2,8 @@
 "_PACKAGE"
 
 ## usethis namespace: start
-#' @importFrom mgcv gam
+#' @import mgcv
+#' @importFrom stats family
 #' @importFrom stats rnorm
 #' @importFrom tidyselect all_of
 ## usethis namespace: end
