@@ -2,6 +2,7 @@
 
 S3method(shift_to_design,data.frame)
 S3method(shift_to_design,list)
+export(WGCM_fix)
 export(as.coord_dsgn)
 export(as.discrete_dsgn)
 export(as.dsgn)
