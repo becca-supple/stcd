@@ -792,7 +792,6 @@ conditional_independencies <- function(data,
 
         if(length(sep_set) > 0){
           #If Xk_t is not in the separating set
-          browser()
           if(Xk_t %in% suppressWarnings(as.numeric(str_split(sep_set, ";", simplify = TRUE))) == FALSE){
 
             #Orient Xj_t -> Xk_t if sufficient
