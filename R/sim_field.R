@@ -38,15 +38,15 @@ sim_field <- function(xy, #dataframe of xy coordinates of point samples
   # Define spatial model and predict
   ###
 
-  spat_model <- gstat(formula = z ~ 1, #single variable no dependence
-                      locations = ~x+y,
-                      dummy = TRUE, #unconditional simulation
-                      beta = nugget,
-                      model = vgm(model = vgm_model,
-                                  psill = sill,
-                                  range = range
-                      ),
-                      nmax = k
+  spat_model <- gstat::gstat(formula = z ~ 1, #single variable no dependence
+                             locations = ~x+y,
+                             dummy = TRUE, #unconditional simulation
+                             beta = nugget,
+                             model = vgm(model = vgm_model,
+                                         psill = sill,
+                                         range = range
+                             ),
+                             nmax = k
   )
 
   spat_sim <- predict(spat_model,
