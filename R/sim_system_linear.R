@@ -24,22 +24,22 @@
 #' @export
 #'
 #' @examples
-sim_system_linear <- function(mask,
-                              area_ID,
-                              t_steps,
-                              autocorrelation = 0.1,
-                              vgm_data = "Gau",
-                              nugget = 0,
-                              sill = 1,
-                              range_percent = 50,
-                              spat_conf = 1,
-                              k = 4,
-                              n_sample = 2500,
-                              strength = c("none", "low", "med", "high"),
-                              noise = 0.1,
-                              return_rast = FALSE,
-                              discrete = TRUE,
-                              n_sites = NULL
+sim_system_linear <- function(mask, #vector of polygons of countries/boundaries
+                              area_ID, #name of object that stores the area IDs in the mask
+                              t_steps, #number of time steps
+                              autocorrelation = 0.1, #autocorrelation between years
+                              vgm_data = "Gau", #variogram model type  for data - "Exp", "Sph", or "Gau"
+                              nugget = 0, #variance at 0 distance
+                              sill = 1, #asymptotic max variance
+                              range_percent = 50, #distance at which 95% of max variance reached - percent of radius of mask
+                              spat_conf = 1, #coefficient for effect of spatial confounding
+                              k = 4, #neighbors to consider when simulating
+                              n_sample = 2500, #number of points to sample for simulation
+                              strength = c("none", "low", "med", "high"), #strength of relationships
+                              noise = 0.1, #random noise
+                              return_rast = FALSE, #return raster data
+                              discrete = TRUE, #discrete space?
+                              n_sites = NULL #number of sites to simulate for discrete space
 ){
 
   ###
@@ -53,7 +53,7 @@ sim_system_linear <- function(mask,
   xy <- as.data.frame(crds(pointsample, df = TRUE))
 
   #transform range percent value
-  area <- sum(expanse(mask, unit = "km"))
+  area <- sum(expanse(mask, unit = "m"))
   range <- (range_percent/100)*(sqrt(area/pi))
 
   ###
@@ -74,7 +74,7 @@ sim_system_linear <- function(mask,
   n_locations <- nrow(U_field)
   xy <- U_field[, c(1, 2)]
 
-  U[[1]] <- U_field[["t1"]]
+  U[[1]] <- U_field[["sim1"]]
 
   for(t in seq(2, t_steps + 1)){
 
@@ -86,7 +86,7 @@ sim_system_linear <- function(mask,
                          sill = sill,
                          range = range,
                          k = k,
-                         n_sample = n_sample)[["t1"]]
+                         n_sample = n_sample)[["sim1"]]
 
     U[[t]] <- autocorrelation * U[[t-1]] + sqrt(1 - autocorrelation^2) * epsilon
 
@@ -349,6 +349,55 @@ sim_system_linear <- function(mask,
 
   else{
 
+    if(return_rast){
+      rast_stack <- list()
+
+      for(t in seq(2, t_steps + 1)){
+
+        #attach data to coordinates
+        spat_sim <- cbind(xy, agr[[t]])
+
+        #make raster
+        rast_sim <- rast(spat_sim, type = "xyz", crs = crs(mask))
+        rast_sim <- mask(rast_sim, mask)
+
+        #add to stack
+        rast_stack[[t-1]] <- c(rast_sim)
+
+        #attach data to coordinates
+        spat_sim <- cbind(xy, fence[[t]])
+
+        #make raster
+        rast_sim <- rast(spat_sim, type = "xyz", crs = crs(mask))
+        rast_sim <- mask(rast_sim, mask)
+
+        #add to stack
+        rast_stack[[t-1]] <- c(rast_stack[[t-1]], rast_sim)
+
+        #attach data to coordinates
+        spat_sim <- cbind(xy, fert[[t]])
+
+        #make raster
+        rast_sim <- rast(spat_sim, type = "xyz", crs = crs(mask))
+        rast_sim <- mask(rast_sim, mask)
+
+        #add to stack
+        rast_stack[[t-1]] <- c(rast_stack[[t-1]], rast_sim)
+
+        #attach data to coordinates
+        spat_sim <- cbind(xy, occ[[t]])
+
+        #make raster
+        rast_sim <- rast(spat_sim, type = "xyz", crs = crs(mask))
+        rast_sim <- mask(rast_sim, mask)
+
+        #add to stack
+        rast_stack[[t-1]] <- c(rast_stack[[t-1]], rast_sim)
+
+      }
+
+    }
+
     if(is.null(n_sites)){
       n_sites <- length(unlist(unique(mask[[area_ID]])))
     }
@@ -379,7 +428,10 @@ sim_system_linear <- function(mask,
 
     }
 
-    return(long_data)
+    if(return_rast){
+      list2return <- list(data = long_data, rasters = rast_stack)
+      return(list2return)
+    }else{return(long_data)}
 
   }
 

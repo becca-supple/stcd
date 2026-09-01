@@ -4,7 +4,15 @@
 \alias{sim_field}
 \title{Wrapper for gstat to simulate from a variogram model}
 \usage{
-sim_field(xy, vgm_model = "Gau", nugget, sill, range, k = 4, n_sample = 1000)
+sim_field(
+  xy,
+  vgm_model = "Gau",
+  nugget = 0,
+  sill = 1,
+  range,
+  k = 4,
+  n_sample = 1000
+)
 }
 \arguments{
 \item{xy}{Data frame of xy coordinates of point samples}
@@ -23,7 +31,7 @@ sim_field(xy, vgm_model = "Gau", nugget, sill, range, k = 4, n_sample = 1000)
 }
 \value{
 A data frame of samples from the spatial model with values in a
-column named "t1"
+column named "sim1"
 }
 \description{
 Wrapper for gstat to simulate from a variogram model

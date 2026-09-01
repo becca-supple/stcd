@@ -9,7 +9,7 @@
 #' @param n_sample Number of points to sample for simulation
 #'
 #' @returns A data frame of samples from the spatial model with values in a
-#' column named "t1"
+#' column named "sim1"
 #' @export
 #'
 #' @examples
@@ -24,13 +24,13 @@
 #'              n_sample = 1000)
 #' head(ex_field)
 #'
-sim_field <- function(xy,
-                      vgm_model = "Gau",
-                      nugget,
-                      sill,
-                      range,
-                      k = 4,
-                      n_sample = 1000
+sim_field <- function(xy, #dataframe of xy coordinates of point samples
+                      vgm_model = "Gau", #variogram model type - "Exp", "Sph", or "Gau"
+                      nugget = 0, #variance at 0 distance
+                      sill = 1, #asymptotic max variance
+                      range, #distance at which 95% of max variance reached
+                      k = 4, #neighbors to consider when simulating
+                      n_sample = 1000 #number of points to sample for simulation
 
 ){
 
@@ -38,23 +38,21 @@ sim_field <- function(xy,
   # Define spatial model and predict
   ###
 
-  spat_model <- gstat::gstat(formula = z ~ 1, #single variable no dependence
-                             locations = ~x+y,
-                             dummy = TRUE, #unconditional simulation
-                             beta = nugget,
-                             model = gstat::vgm(model = vgm_model,
-                                                psill = sill,
-                                                range = range
-                             ),
-                             nmax = k
+  spat_model <- gstat(formula = z ~ 1, #single variable no dependence
+                      locations = ~x+y,
+                      dummy = TRUE, #unconditional simulation
+                      beta = nugget,
+                      model = vgm(model = vgm_model,
+                                  psill = sill,
+                                  range = range
+                      ),
+                      nmax = k
   )
 
   spat_sim <- predict(spat_model,
                       newdata = xy,
                       nsim = 1,
-                      debug.level = 0) |>
-    mutate(t1 = sim1) |>
-    select(-sim1)
+                      debug.level = 0)
 
   return(spat_sim)
 }

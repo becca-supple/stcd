@@ -31,10 +31,12 @@ export(sim_system_linear)
 export(unpack_files)
 import(dplyr)
 import(mgcv)
-importFrom(stats,as.formula)
-importFrom(stats,family)
-importFrom(stats,residuals)
-importFrom(stats,rnorm)
+importFrom(stats,
+  as.formula,
+  family,
+  residuals,
+  rnorm
+)
 importFrom(stringr,str_split)
 importFrom(tidyselect,all_of)
 importFrom(utils,combn)
