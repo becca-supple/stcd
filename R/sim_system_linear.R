@@ -24,22 +24,22 @@
 #' @export
 #'
 #' @examples
-sim_system_linear <- function(mask, #vector of polygons of countries/boundaries
-                              area_ID, #name of object that stores the area IDs in the mask
-                              t_steps, #number of time steps
-                              autocorrelation = 0.1, #autocorrelation between years
-                              vgm_data = "Gau", #variogram model type  for data - "Exp", "Sph", or "Gau"
-                              nugget = 0, #variance at 0 distance
-                              sill = 1, #asymptotic max variance
-                              range_percent = 50, #distance at which 95% of max variance reached - percent of radius of mask
-                              spat_conf = 1, #coefficient for effect of spatial confounding
-                              k = 4, #neighbors to consider when simulating
-                              n_sample = 2500, #number of points to sample for simulation
-                              strength = c("none", "low", "med", "high"), #strength of relationships
-                              noise = 0.1, #random noise
-                              return_rast = FALSE, #return raster data
-                              discrete = TRUE, #discrete space?
-                              n_sites = NULL #number of sites to simulate for discrete space
+sim_system_linear <- function(mask,
+                              area_ID,
+                              t_steps,
+                              autocorrelation = 0.1,
+                              vgm_data = "Gau",
+                              nugget = 0,
+                              sill = 1,
+                              range_percent = 50,
+                              spat_conf = 1,
+                              k = 4,
+                              n_sample = 2500,
+                              strength = c("none", "low", "med", "high"),
+                              noise = 0.1,
+                              return_rast = FALSE,
+                              discrete = TRUE,
+                              n_sites = NULL
 ){
 
   ###
