@@ -1,6 +1,6 @@
 Package: stcd
 Title: Spatiotemporal Causal Discovery
-Version: 0.0.0.9002
+Version: 0.0.0.9003
 Authors@R: 
     person("Rebecca", "Supple", , "rbs9@st-andrews.ac.uk", 
       role = c("aut", "cre"),
