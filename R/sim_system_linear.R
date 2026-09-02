@@ -128,7 +128,7 @@ sim_system_linear <- function(mask,
                         ifelse(strength == "med", 1, 2)))
 
   #Initialize time series
-  fence[[1]] <- beta * agr[[1]] + spat_conf * U[[1]] +
+  fence[[1]] <- (0.5) * beta * agr[[1]] + spat_conf * U[[1]] +
     rnorm(n_locations, 0, noise)
 
   for(t in seq(2, t_steps + 1)){
@@ -136,7 +136,7 @@ sim_system_linear <- function(mask,
     fence[[t]] <- numeric(n_locations)
 
     fence[[t]] <- autocorrelation * fence[[t-1]] +
-      beta * agr[[t]] + spat_conf * U[[t]] + rnorm(n_locations, 0, noise)
+     (0.5) * beta * agr[[t]] + spat_conf * U[[t]] + rnorm(n_locations, 0, noise)
 
   }
 
