@@ -149,7 +149,7 @@ conditional_independencies <- function(data,
         n_X <- length(X)
 
         design <- shift_to_design(data,
-                                  coord_cols = coords,
+                                  coords = coords,
                                   time_col = time,
                                   max_lag = max_lag)
 
