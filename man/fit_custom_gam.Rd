@@ -24,7 +24,8 @@ fit_custom_gam(
 \item{distribution}{String describing distribution/family of response}
 
 \item{modeltype}{String describing model structure: one of "separated",
-"tensor", or "both". Not relevant when \code{model_on = "null"}.}
+"tensor", "both", or "3D" (only for \code{coord_dsgn} objects). Not relevant when
+\code{model_on = "null"}.}
 
 \item{...}{other arguments specific to spatial structure. See details.}
 }

@@ -6,7 +6,8 @@
 #' `"null"` for a space-only model
 #' @param distribution String describing distribution/family of response
 #' @param modeltype String describing model structure: one of "separated",
-#' "tensor", or "both". Not relevant when `model_on = "null"`.
+#' "tensor", "both", or "3D" (only for `coord_dsgn` objects). Not relevant when
+#'  `model_on = "null"`.
 #' @param ... other arguments specific to spatial structure. See details.
 #'
 #' @section Fitting discrete space models:
@@ -394,8 +395,58 @@ fit_custom_gam.coord_dsgn <- function(design,
           res <- residuals(fit_gam, type = "response")
 
         }else{
-          stop(paste0("\nUnknown model type ", modeltype,
-                      ". Options are 'separated', 'tensor', or 'both'."))}
+
+          if(modeltype == "3D"){
+
+            #Initialize formula
+            formula <- paste0(colnames(design)[response], " ~ ")
+
+
+            #Find the right column in design for each predictor
+            vars_c_design <- colnames(design)[model_on]
+
+            for(c_ind in seq(1, length(model_on))){
+
+              #Combine into a single formula
+              if(is.null(k)){
+
+                c_formula <- paste0("s(", vars_c_design[c_ind],
+                                    ",",
+                                    coords[1], ", ", coords[2],
+                                    ", bs = 'tp')")
+
+              }else{
+
+                c_formula <- paste0("s(", vars_c_design[c_ind],
+                                    ",",
+                                    coords[1], ", ", coords[2],
+                                    ", bs = 'tp', k = ", k, ")")
+
+              }
+
+              if(c_ind == 1){
+                formula <- paste(formula, c_formula)
+              }else{
+                formula <- paste(formula, c_formula, sep = " + ")
+              }
+
+            }
+
+            formula <- as.formula(formula)
+
+            fam_fun <- get(distribution)
+
+            #Fit GAM
+            fit_gam <- suppressWarnings(gam(formula = formula, family = fam_fun(),
+                                            data = design,
+                                            method = "REML"))
+
+            #Return residuals
+            res <- residuals(fit_gam, type = "response")
+          }else{
+            stop(paste0("\nUnknown model type ", modeltype,
+                        ". Options are 'separated', 'tensor', 'both', or '3D'."))}
+        }
       }
     }
   }
