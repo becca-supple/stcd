@@ -2,7 +2,7 @@
 % Please edit documentation in R/orient_edges.R
 \name{orient_edges}
 \alias{orient_edges}
-\title{Orient edges}
+\title{Orient edges of a skeleton graph}
 \usage{
 orient_edges(independencies, max_lag = 2, names = TRUE, sufficiency = FALSE)
 }
@@ -19,7 +19,9 @@ orient_edges(independencies, max_lag = 2, names = TRUE, sufficiency = FALSE)
 A PAG object if sufficiency = FALSE, a CPDAG if TRUE
 }
 \description{
-Orient edges
+Function to orient edges/place edge marks given a skeleton and identified colliders from
+\link{conditional_independencies}. User indicates if sufficiency-assuming rules should be used or not, leading
+to output of either a CPDAG or PAG.
 }
 \examples{
 

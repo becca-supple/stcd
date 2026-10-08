@@ -1,9 +1,13 @@
-#' Orient edges
+#' Orient edges of a skeleton graph
 #'
 #' @param independencies Outputs from conditional independence algorithm [conditional_independencies]
 #' @param max_lag Maximum considered time lag
 #' @param names If = TRUE, replace indices with variable names in output
 #' @param sufficiency FALSE by default
+#'
+#'@description Function to orient edges/place edge marks given a skeleton and identified colliders from
+#'[conditional_independencies]. User indicates if sufficiency-assuming rules should be used or not, leading
+#'to output of either a CPDAG or PAG.
 #'
 #' @returns A PAG object if sufficiency = FALSE, a CPDAG if TRUE
 #' @export
