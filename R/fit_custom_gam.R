@@ -408,21 +408,10 @@ fit_custom_gam.coord_dsgn <- function(design,
             for(c_ind in seq(1, length(model_on))){
 
               #Combine into a single formula
-              if(is.null(k)){
-
-                c_formula <- paste0("s(", vars_c_design[c_ind],
-                                    ",",
-                                    coords[1], ", ", coords[2],
-                                    ", bs = 'tp')")
-
-              }else{
-
-                c_formula <- paste0("s(", vars_c_design[c_ind],
-                                    ",",
-                                    coords[1], ", ", coords[2],
-                                    ", bs = 'tp', k = ", k, ")")
-
-              }
+              c_formula <- paste0("s(", vars_c_design[c_ind],
+                                  ",",
+                                  coords[1], ", ", coords[2],
+                                  ", bs = 'tp')")
 
               if(c_ind == 1){
                 formula <- paste(formula, c_formula)
